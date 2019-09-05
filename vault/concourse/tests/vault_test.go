@@ -48,25 +48,10 @@ func TestVault(t *testing.T) {
 		Command: "./make_certs.sh",
 	}
 
-	// removeCertsCommand := shell.Command{
-	// 	Command: "rm",
-	// 	Args: []string{
-	// 		"-rf", "vault-certs",
-	// 	},
-	// }
-
 	workDir, err := os.Getwd()
 	if err != nil {
 		log.Println(err)
 	}
-	// fmt.Println(workDir)
-
-	// removeTerragruntCacheCommand := shell.Command{
-	// 	Command: "find",
-	// 	Args: []string{
-	// 		workDir, "-type", "d", "-iname", ".terragrunt-cache", "-prune", "-exec", "rm", "-rf", "{}", "\;"
-	// 	},
-	// }
 
 	tempDir, err := ioutil.TempDir(os.TempDir(), "terratest-")
 	if err != nil {
@@ -80,9 +65,7 @@ func TestVault(t *testing.T) {
 	defer docker.RunDockerCompose(t, dockerOptions, "down", "-v")
 
 	shell.RunCommand(t, makeCertsCommand)
-	//defer shell.RunCommand(t, removeCertsCommand)
 	defer os.RemoveAll(filepath.Join(workDir, "vault-certs"))
-	//defer shell.RunCommand(t, removeTerragruntCacheCommand)
 
 	// Run Docker Compose to start Vault.
 	docker.RunDockerCompose(t, dockerOptions, "up", "-d", "vault")
@@ -101,7 +84,6 @@ func TestVault(t *testing.T) {
 	// https://www.vaultproject.io/api/system/health.html
 	checkVault(t, 200)
 
-	// run base, get the output, then run concourse?
 	baseTerraformOptions := &terraform.Options{
 		TerraformBinary: "terragrunt",
 		// The path to where our Terraform code is located
@@ -109,8 +91,7 @@ func TestVault(t *testing.T) {
 
 		// // Environment variables to set when running Terraform
 		EnvVars: map[string]string{
-			"VAULT_ADDR": "https://127.0.0.1:8200",
-			//"VAULT_CACERT": "tests/vault-certs/vault-ca.crt",
+			"VAULT_ADDR":          "https://127.0.0.1:8200",
 			"VAULT_CACERT":        filepath.Join(filepath.Dir(workDir), "tests/vault-certs/vault-ca.crt"),
 			"TERRAGRUNT_DOWNLOAD": filepath.Join(tempDir, "base"),
 		},
@@ -118,17 +99,12 @@ func TestVault(t *testing.T) {
 
 	// At the end of the test, run `terraform destroy` to clean up any resources that were created
 	defer terraform.Destroy(t, baseTerraformOptions)
-	path, err := os.Getwd()
-	if err != nil {
-		log.Println(err)
-	}
-	fmt.Println(path) // for example /home/user
+
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, baseTerraformOptions)
 
 	provisionerToken := terraform.Output(t, baseTerraformOptions, "provisioner_client_token")
 
-	// run base, get the output, then run concourse?
 	terraformOptions := &terraform.Options{
 		TerraformBinary: "terragrunt",
 		// The path to where our Terraform code is located
