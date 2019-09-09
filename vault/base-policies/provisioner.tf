@@ -8,7 +8,6 @@ path "auth/*"
 {
   capabilities = ["create", "read", "update", "delete"]
 }
-# , "sudo"
 
 path "auth/"
 {
@@ -20,7 +19,6 @@ path "sys/auth/*"
 {
   capabilities = ["create", "read", "update", "delete"]
 }
-# , "sudo"
 
 # Read auth methods
 path "sys/auth"
@@ -68,7 +66,6 @@ path "auth/token/create"
 {
   capabilities = ["create", "read", "update"]
 }
-# , "list"
 
 path "auth/token/lookup-self"
 {
@@ -85,7 +82,6 @@ path "sys/mounts/*"
 {
   capabilities = ["create", "read", "update", "delete"]
 }
-# , "sudo"
 
 path "sys/mounts/"
 {
