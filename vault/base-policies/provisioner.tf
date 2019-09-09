@@ -123,7 +123,25 @@ path "concourse/*" {
 EOT
 }
 
+resource "vault_policy" "pki-rw" {
+  name = "pki-rw"
 
+  policy = <<EOT
+path "pki/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+EOT
+}
+
+resource "vault_policy" "pki-root-rw" {
+  name = "pki-root-rw"
+
+  policy = <<EOT
+path "pki-root/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
+}
+EOT
+}
 # path "auth/approle/role"
 # {
 #   capabilities = ["read", "list"]
@@ -162,7 +180,9 @@ resource "vault_token" "provisioner" {
 
   policies = [
     "provisioner",
-    "concourse-rw"
+    "concourse-rw",
+    "pki-rw",
+    "pki-root-rw"
   ]
 
   renewable = true
