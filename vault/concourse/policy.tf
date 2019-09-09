@@ -24,7 +24,7 @@ resource "vault_token" "concourse-secret-provisioner" {
   policies = ["concourse-rw"]
 
   renewable = true
-  ttl = "720h"
+  ttl       = "720h"
 
 }
 

@@ -1,5 +1,5 @@
 resource "vault_mount" "concourse" {
-  path        = "concourse"
+  path = "concourse"
   # Concourse needs v1 - https://concourse-ci.org/vault-credential-manager.html
   # type        = "kv-v2"
   type        = "kv"
