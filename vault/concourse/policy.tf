@@ -2,21 +2,22 @@ resource "vault_policy" "concourse-ro" {
   name = "concourse-ro"
 
   policy = <<EOT
-path "concourse/*" {
+path "${var.secrets_path_prefix}/concourse/*" {
   policy = "read"
 }
 EOT
 }
 
-resource "vault_token" "concourse-secret-provisioner" {
-  display_name = "concourse-secret-provisioner"
+# child policies must be subset of parent
+# resource "vault_token" "concourse-secret-provisioner" {
+#   display_name = "concourse-secret-provisioner"
 
-  policies = ["concourse-rw"]
+#   policies = ["concourse-rw"]
 
-  renewable = true
-  ttl       = "720h"
+#   renewable = true
+#   ttl       = "720h"
 
-}
+# }
 
 
 # Need?

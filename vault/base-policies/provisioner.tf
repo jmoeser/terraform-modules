@@ -98,7 +98,7 @@ path "auth/approle/"
   capabilities = ["list"]
 }
 
-path "concourse/*" {
+path "${var.secrets_path_prefix}/concourse/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 
@@ -109,7 +109,7 @@ resource "vault_policy" "concourse-rw" {
   name = "concourse-rw"
 
   policy = <<EOT
-path "concourse/*" {
+path "${var.secrets_path_prefix}/concourse/*" {
   capabilities = ["create", "read", "update", "delete", "list"]
 }
 EOT

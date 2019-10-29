@@ -7,7 +7,7 @@ output "secret_id" {
   sensitive = true
 }
 
-output "concourse_secret_provisioner_token" {
-  value     = vault_token.concourse-secret-provisioner.client_token
-  sensitive = true
-}
+# output "concourse_secret_provisioner_token" {
+#   value     = vault_token.concourse-secret-provisioner.client_token
+#   sensitive = true
+# }

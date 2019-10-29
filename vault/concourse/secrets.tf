@@ -1,5 +1,5 @@
 resource "vault_mount" "concourse" {
-  path = "concourse"
+  path = "${var.secrets_path_prefix}/concourse"
   # Concourse needs v1 - https://concourse-ci.org/vault-credential-manager.html
   # type        = "kv-v2"
   type        = "kv"
@@ -10,7 +10,7 @@ resource "vault_mount" "concourse" {
 }
 
 resource "vault_generic_secret" "concourse" {
-  path = "concourse/test"
+  path = "${var.secrets_path_prefix}/concourse/test"
 
   data_json = var.json_secret
 
