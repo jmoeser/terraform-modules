@@ -1,9 +1,5 @@
 # vault write auth/approle/role/concourse policies=concourse period=1h
 
-# resource "vault_auth_backend" "approle" {
-#   type = "approle"
-# }
-
 resource "vault_approle_auth_backend_role" "concourse" {
   backend        = "approle"
   role_name      = "concourse"

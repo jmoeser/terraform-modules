@@ -4,11 +4,6 @@ output "admin_client_token" {
   sensitive = true
 }
 
-# output "provisioner_client_token" {
-#   value     = vault_token.provisioner.client_token
-#   sensitive = true
-# }
-
 output "tf_role_id" {
   value = vault_approle_auth_backend_role.terraform.role_id
 }

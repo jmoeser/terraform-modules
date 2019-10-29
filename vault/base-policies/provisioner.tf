@@ -134,53 +134,6 @@ path "pki-root/*" {
 }
 EOT
 }
-# path "auth/approle/role"
-# {
-#   capabilities = ["read", "list"]
-# }
-
-# path "auth/approle/role/*"
-# {
-#   capabilities = ["read", "list", "update"]
-# }
-
-# path "auth/approle/role/+/secret-id-accessor"
-# {
-#   capabilities = ["create", "read", "update", "delete", "list"]
-# }
-
-# path "auth/approle/role/+/secret-id-accessor/lookup"
-# {
-#   capabilities = ["create", "read", "update", "delete", "list"]
-# }
-
-
-# List, create, update, and delete key/value secrets
-# path "secret/*"
-# {
-#   capabilities = ["create", "read", "update", "delete", "list"]
-# }
-
-# Create and manage ACL policies via API & UI
-#path "sys/policy/acl/*"
-#{
-#  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
-#}
-
-# resource "vault_token" "provisioner" {
-#   display_name = "terraform-provisioner"
-
-#   policies = [
-#     "provisioner",
-#     "concourse-rw",
-#     "pki-rw",
-#     "pki-root-rw"
-#   ]
-
-#   renewable = true
-#   ttl       = "720h"
-
-# }
 
 # resource "null_resource" "revoke-root" {
 #   provisioner "local-exec" {

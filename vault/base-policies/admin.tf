@@ -92,21 +92,13 @@ path "auth/token/"
 EOT
 }
 
-# resource "vault_identity_entity" "test" {
-#   name      = "tester1"
-#   policies  = ["admin"]
-#   metadata  = {
-#     source = "terraform"
-#   }
-# }
-
 resource "vault_token" "admin" {
   display_name = "terraform-admin"
 
   policies = ["admin"]
 
   renewable = true
-  ttl = "720h"
+  ttl       = "720h"
 
 }
 
