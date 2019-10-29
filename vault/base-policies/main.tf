@@ -1,5 +1,5 @@
 provider "vault" {
-  version = "~> 2.2"
+  version = "~> 2.5"
 }
 
 terraform {

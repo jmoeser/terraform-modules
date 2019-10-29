@@ -9,21 +9,13 @@ resource "vault_mount" "concourse" {
   }
 }
 
-# resource "vault_generic_secret" "concourse" {
-#   path = "concourse/test"
+resource "vault_generic_secret" "concourse" {
+  path = "concourse/test"
 
-#   data_json = var.json_secret
+  data_json = var.json_secret
 
-# #   data_json = <<-EOT
-# # {
-# # %{ for ip in aws_instance.example.*.private_ip ~}
-# #   "server":  "${ip}",
-# # %{ endfor ~}
-# # }
-# # EOT
-
-#   depends_on = [vault_mount.concourse]
-# }
+  depends_on = [vault_mount.concourse]
+}
 
 // https://github.com/hashicorp/terraform/issues/16628#issuecomment-510263706
 // https://www.hashicorp.com/resources/best-practices-production-hardened-vault

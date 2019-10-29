@@ -98,20 +98,12 @@ path "auth/approle/"
   capabilities = ["list"]
 }
 
-EOT
+path "concourse/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
 }
 
-# resource "vault_policy" "provisioner-secret-management" {
-#   name = "provisioner-secret-management"
-
-#   policy = <<EOT
-# path "concourse/*"
-# {
-#   capabilities = ["create", "read", "update", "delete", "list"]
-# }
-
-# EOT
-# }
+EOT
+}
 
 resource "vault_policy" "concourse-rw" {
   name = "concourse-rw"
@@ -175,20 +167,20 @@ EOT
 #  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 #}
 
-resource "vault_token" "provisioner" {
-  display_name = "terraform-provisioner"
+# resource "vault_token" "provisioner" {
+#   display_name = "terraform-provisioner"
 
-  policies = [
-    "provisioner",
-    "concourse-rw",
-    "pki-rw",
-    "pki-root-rw"
-  ]
+#   policies = [
+#     "provisioner",
+#     "concourse-rw",
+#     "pki-rw",
+#     "pki-root-rw"
+#   ]
 
-  renewable = true
-  ttl = "720h"
+#   renewable = true
+#   ttl       = "720h"
 
-}
+# }
 
 # resource "null_resource" "revoke-root" {
 #   provisioner "local-exec" {

@@ -103,7 +103,9 @@ func TestVault(t *testing.T) {
 	// This will run `terraform init` and `terraform apply` and fail the test if there are any errors
 	terraform.InitAndApply(t, baseTerraformOptions)
 
-	provisionerToken := terraform.Output(t, baseTerraformOptions, "provisioner_client_token")
+	// provisionerToken := terraform.Output(t, baseTerraformOptions, "provisioner_client_token")
+	appRoleID := terraform.Output(t, baseTerraformOptions, "tf_role_id")
+	appRoleSecretID := terraform.Output(t, baseTerraformOptions, "tf_secret_id")
 
 	terraformOptions := &terraform.Options{
 		TerraformBinary: "terragrunt",
@@ -112,9 +114,11 @@ func TestVault(t *testing.T) {
 
 		// // Environment variables to set when running Terraform
 		EnvVars: map[string]string{
-			"VAULT_ADDR":          "https://127.0.0.1:8200",
-			"VAULT_CACERT":        filepath.Join(filepath.Dir(workDir), "tests/vault-certs/vault-ca.crt"),
-			"VAULT_TOKEN":         provisionerToken,
+			"VAULT_ADDR":   "https://127.0.0.1:8200",
+			"VAULT_CACERT": filepath.Join(filepath.Dir(workDir), "tests/vault-certs/vault-ca.crt"),
+			//"VAULT_TOKEN":         provisionerToken,
+			"TF_VAR_role_id":      appRoleID,
+			"TF_VAR_secret_id":    appRoleSecretID,
 			"TERRAGRUNT_DOWNLOAD": filepath.Join(tempDir, "concourse"),
 		},
 	}
@@ -139,6 +143,30 @@ func TestVault(t *testing.T) {
 
 	// Run Docker Compose to start Postgres and Concourse
 	docker.RunDockerCompose(t, concourseDockerOptions, "up", "-d")
+
+	// read okay
+	// curl \
+	//     --header "X-Vault-Token: ..." \
+	//     https://127.0.0.1:8200/v1/secret/my-secret
+
+	// list okay
+	// $ curl \
+	//    --header "X-Vault-Token: ..." \
+	//    --request LIST \
+	//    https://127.0.0.1:8200/v1/secret/my-secret
+
+	// delete not okay
+	// curl \
+	//    --header "X-Vault-Token: ..." \
+	//    --request DELETE \
+	//    https://127.0.0.1:8200/v1/secret/my-secret
+
+	// update note okay
+	// curl \
+	//     --header "X-Vault-Token: ..." \
+	//     --request POST \
+	//     --data @payload.json \
+	//     https://127.0.0.1:8200/v1/secret/my-secret
 
 	// test can read secret from /concourse path?
 	// test can't read secret from other path?

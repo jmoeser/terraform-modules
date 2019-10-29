@@ -1,5 +1,12 @@
 provider "vault" {
-  version = "~> 2.2"
+  version = "~> 2.5"
+  auth_login {
+    path = "auth/approle/login"
+    parameters = {
+      role_id   = var.role_id
+      secret_id = var.secret_id
+    }
+  }
 }
 
 terraform {

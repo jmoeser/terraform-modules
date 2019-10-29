@@ -29,13 +29,13 @@ services:
       # CONCOURSE_VAULT_AUTH_PARAM
       CONCOURSE_VAULT_CA_CERT: /vault-certs/vault-ca.crt
     volumes:
-    - ./vault-certs:/vault-certs
+    - ./vault-certs:/vault-certs:ro,z
 
   vault:
-    image: vault
+    image: vault:1.2.3
     cap_add: [IPC_LOCK]
     ports: ["8200:8200"]
     volumes:
-    - ./vault-certs:/vault/certs
-    - ./vault-config:/vault/config
+    - ./vault-certs:/vault/certs:ro,z
+    - ./vault-config:/vault/config:ro,z
     command: server
